@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hip-local-api
+  name: tiktalk-cluster
   labels:
-    app: hip-local-api
+    app: tiktalk-cluster
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: hip-local-api
+      app: tiktalk-cluster
   template:
     metadata:
       labels:
-        app: hip-local-api
+        app: tiktalk-cluster
     spec:
       containers:
-      - name: hip-local-api
-        image: gcr.io/roi-hiplocal/api:v0.8
+      - name: tiktalk-cluster
+        image: gcr.io/tiktalk-cluster/v0.1
         env:
         - name: PORT
-          value: "8085"
+          value: "5000"
         ports:
-        - containerPort: 8085
+        - containerPort: 5000
           name: "backend-server"
         resources:
           requests:
@@ -33,7 +33,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 8085
+            port: 5000
           initialDelaySeconds: 60
           periodSeconds: 60
 ---
