@@ -1,5 +1,5 @@
 import db
-import flask 
+import flask
 import json
 
 app = flask.Flask(__name__)
@@ -27,5 +27,5 @@ def like(id):
     return flask.jsonify({ 'likes': db.like_happening(id) }), 201
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8085, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
