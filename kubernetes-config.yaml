@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: tiktalk-cluster
-        image: gcr.io/tiktalk-cluster/v0.1
+        image: elishirk/tiktalk-backend:v7.0 
         env:
         - name: PORT
           value: "5000"
@@ -44,27 +44,9 @@ metadata:
   name: hip-local-api-svc
 spec: 
   ports: 
-     -  port: 8085
+     -  port: 80
         protocol: TCP
-        targetPort: 8085
+        targetPort: 5000
   selector: 
-    app: hip-local-api
-  type: NodePort
----
-
-apiVersion: autoscaling/v2beta1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: hip-local-api-autoscaler
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v2beta1
-    kind: Deployment
-    name: hip-local-api
-  minReplicas: 3
-  maxReplicas: 6
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      targetAverageUtilization: 60
+    app: tiktalk-cluster
+  type: LoadBalancer

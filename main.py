@@ -8,11 +8,22 @@ app = flask.Flask(__name__)
 def healthCheck():
     return flask.jsonify([])
 
+@app.route('/events', methods=['GET'])
+def read_events():
+    return json.dumps(db.get_events(), indent=4, sort_keys=True, default=str), 200
+
+@app.route('/events/add/<id>', methods=['POST'])
+def create_events(id):
+    print('backend service adding new event')
+    data = flask.request.form.to_dict(flat=True)
+    doc = db.add_events(data, id)
+    return flask.jsonify({ 'id': doc }), 201
+
 @app.route('/happenings', methods=['GET'])
 def read_happenings():
     print('backend service responding to request for happenings')
     # string is default to prevent error when jsonifying python datetime
-    return json.dumps(db.get_happenings(), indent=4, sort_keys=True, default=str), 200
+    return json.dumps(db.get_events(), indent=4, sort_keys=True, default=str), 200
 
 @app.route('/happenings/add/<id>', methods=['POST'])
 def create_happening(id):
@@ -28,4 +39,3 @@ def like(id):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-

@@ -1,13 +1,15 @@
-from google.cloud import firestore
 from flask import abort
 import json
 import datetime
+#from firebase_admin import credentials
+from google.cloud import firestore
 
-HAPPENINGS = firestore.Client().collection('happenings')
 
-def get_happenings():
-    print('Retrieving happenings from firestore')
-    docs = HAPPENINGS.order_by('date_added', direction=firestore.Query.DESCENDING).get()
+HAPPENINGS = firestore.Client().collection('events')
+
+def get_events():
+    print('Retrieving events from firestore')
+    docs = HAPPENINGS.get()
     ret = []
     for doc in docs:
         d = doc.to_dict()
@@ -35,4 +37,3 @@ def _ensure_happening(id):
     except:
         print('failed attempt to access happening ' + id)
         abort(404)
-
